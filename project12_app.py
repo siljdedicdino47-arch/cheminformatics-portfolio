@@ -33,9 +33,8 @@
 # ============================================================================
 
 import streamlit as st
-from rdkit import Chem
+from rdkit import Chem, DataStructs
 from rdkit.Chem import Descriptors, Lipinski, AllChem, Draw, rdMolDescriptors
-from rdkit.Chem import DataStructs
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -374,3 +373,4 @@ Built with Python, RDKit, and Streamlit.
 View source: <a href='https://github.com/your-username/cheminformatics-portfolio'>GitHub</a>
 </div>
 """, unsafe_allow_html=True)
+
