@@ -33,6 +33,7 @@
 # ============================================================================
 
 import streamlit as st
+from rdkit import Chem, DataStructs
 from rdkit.Chem import Descriptors, Lipinski, AllChem, Draw, rdMolDescriptors
 import pandas as pd
 import numpy as np
