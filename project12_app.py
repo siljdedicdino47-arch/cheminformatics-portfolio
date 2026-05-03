@@ -227,12 +227,13 @@ if smiles:
                 cols[i % 3].metric(k, v)
         
         # Tabs for different analyses
-        tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
             "📋 Drug-likeness", 
             "🔬 ADMET", 
             "⚡ Covalent", 
             "🎯 Similar Drugs",
-            "📊 Comparison"
+            "📊 Comparison",
+            "🧠 QSAR"
         ])
         
         with tab1:
@@ -339,6 +340,42 @@ if smiles:
             ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
             ax.set_title("Property Comparison (normalized)", fontweight='bold', y=1.1)
             st.pyplot(fig)
+        
+        with tab6:
+            st.subheader("QSAR Predictions")
+            st.info("🧠 **Quantitative Structure-Activity Relationship (QSAR) modeling**")
+            st.markdown("""
+            QSAR models predict biological activity from molecular structure using machine learning.
+            
+            **How QSAR works:**
+            1. Calculate molecular descriptors (fingerprints, physicochemical properties)
+            2. Train ML model on experimental activity data
+            3. Predict activity for new molecules
+            
+            **Current status:** Rule-based predictions only (see ADMET tab).
+            For real QSAR, you'd need:
+            - Experimental activity data (IC50, Ki, etc.)
+            - Molecular fingerprints or descriptors
+            - ML algorithms (Random Forest, SVM, Neural Networks)
+            """)
+            
+            # Show example of what QSAR predictions might look like
+            st.markdown("**Example QSAR predictions for this molecule:**")
+            qsar_predictions = {
+                "Predicted pIC50 (μM)": f"{round(np.random.uniform(4, 8), 2)} (hypothetical)",
+                "Predicted BBB Permeability": "🟢 High" if props["LogP"] > 2 else "🟡 Moderate",
+                "Predicted CYP3A4 Inhibition": "🔴 High Risk" if props["H-Bond Donors"] > 3 else "🟢 Low Risk",
+                "Predicted hERG Liability": "🟢 Low Risk" if props["TPSA"] < 100 else "🟡 Moderate Risk"
+            }
+            
+            for prop, value in qsar_predictions.items():
+                st.markdown(f"**{prop}**: {value}")
+            
+            st.markdown("---")
+            st.markdown("""
+            **Note:** These are simulated predictions for demonstration.
+            Real QSAR models require training on experimental data and validation.
+            """)
 
 else:
     st.info("👈 Enter a SMILES string in the sidebar to begin analysis")
@@ -360,6 +397,7 @@ else:
     - ✅ Detect covalent warhead groups
     - ✅ Find structurally similar drugs in the database
     - ✅ Compare properties against typical drug classes
+    - ✅ Demonstrate QSAR concepts (educational placeholder)
     """)
 
 
@@ -373,4 +411,3 @@ Built with Python, RDKit, and Streamlit.
 View source: <a href='https://github.com/your-username/cheminformatics-portfolio'>GitHub</a>
 </div>
 """, unsafe_allow_html=True)
-
