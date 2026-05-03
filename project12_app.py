@@ -151,12 +151,12 @@ def detect_warheads(mol):
     return found
 
 def similarity_search(query_mol, db, top_n=5):
-    query_fp = AllChem.GetMorganFingerprintAsBitVect(query_mol, 2, nBits=2048)
+    query_fp = AllChem.GetMorganGenerator(radius=2, fpSize=2048).GetFingerprint(query_mol)
     results = []
     for entry in db:
         mol = Chem.MolFromSmiles(entry["smiles"])
         if mol is None: continue
-        fp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048)
+        fp = AllChem.GetMorganGenerator(radius=2, fpSize=2048).GetFingerprint(mol)
         sim = DataStructs.TanimotoSimilarity(query_fp, fp)
         results.append({"Name": entry["name"], "Class": entry["class"], "Similarity": round(sim, 3)})
     return sorted(results, key=lambda x: x["Similarity"], reverse=True)[:top_n]
@@ -213,7 +213,7 @@ if smiles:
         
         with col1:
             st.subheader("Structure")
-            st.image(mol_to_image(mol), use_container_width=True)
+            st.image(mol_to_image(mol), width='stretch')
             
             st.markdown("**Canonical SMILES:**")
             st.code(Chem.MolToSmiles(mol), language="text")
@@ -295,7 +295,7 @@ if smiles:
                 elif val >= 0.4: return 'background-color: #f39c12; color: white'
                 else: return 'background-color: #95a5a6; color: white'
             
-            styled_df = sim_df.style.applymap(color_sim, subset=['Similarity'])
+            styled_df = sim_df.style.map(color_sim, subset=['Similarity'])
             st.dataframe(styled_df, use_container_width=True)
             
             st.markdown("---")
